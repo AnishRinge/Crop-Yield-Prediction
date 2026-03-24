@@ -221,3 +221,120 @@ The dataset is now:
 This cleaned dataset is now ready for Exploratory Data Analysis (EDA) and model development.
 
 ## Phase 3
+### EDA
+After cleaning the dataset, Exploratory Data Analysis (EDA) was performed to understand the distribution of variables, relationships between features, and key factors affecting crop yield.
+
+1. Target Variable Analysis
+
+The target variable yield was analyzed using summary statistics, histograms, and boxplots.
+
+The distribution of yield was found to be highly right-skewed, with most values concentrated at lower ranges and a few extreme high values.
+Presence of significant outliers was observed.
+
+To address this, a log transformation was applied:
+
+df$log_yield <- log1p(df$yield)
+This transformation reduced skewness and made the distribution more suitable for modeling.
+All further analysis used log_yield as the target variable.
+2. Crop-wise Yield Analysis
+
+Boxplots were created to analyze yield distribution across different crops.
+
+Significant variation in yield was observed across crops.
+Crops such as Coconut, Sugarcane, and Rice showed higher yield values.
+Pulses and millets exhibited comparatively lower yields.
+Some crops showed high variability, indicating dependency on environmental and input conditions.
+
+Insight: Crop type is a critical factor influencing yield.
+
+3. Season-wise Yield Analysis
+
+Yield distribution was analyzed across seasons.
+
+Crops grown in the Whole Year category showed the highest yields and variability.
+Seasonal crops (Kharif, Rabi, Autumn) exhibited lower but more consistent yields.
+
+Insight: Seasonal patterns significantly affect crop productivity.
+
+4. Correlation Analysis
+
+A correlation heatmap was generated to understand relationships between numerical variables.
+
+Strong correlation observed between production and yield (expected due to formula dependency).
+This was identified as data leakage, and production was removed from the dataset.
+Most other variables showed weak linear correlations with yield.
+
+Insight: Yield is influenced by multiple factors, but relationships are not strictly linear.
+
+5. Feature vs Yield Analysis
+
+Scatter plots were used to analyze relationships between key numerical features and log_yield.
+
+Fertilizer vs Yield: No clear linear trend; relationship appears non-linear.
+Rainfall vs Yield: Wide spread; optimal ranges likely exist rather than direct proportionality.
+Temperature vs Yield: Certain temperature ranges showed higher yield clusters.
+
+Insight: Environmental and input variables influence yield in a complex, non-linear manner.
+
+6. Key Observations
+Yield distribution is highly skewed and required transformation.
+Crop type and season are major determinants of yield.
+Input variables (fertilizer, pesticide) and environmental factors (temperature, rainfall, humidity) influence yield, but not in a strictly linear way.
+No single feature strongly explains yield — indicating the need for advanced machine learning models.
+7. Feature Selection Decisions
+Removed:
+production (data leakage)
+yield (replaced by log_yield)
+Retained:
+Crop, season, state
+Soil parameters (N, P, K, pH)
+Weather features (temperature, rainfall, humidity)
+Input variables (fertilizer, pesticide)
+Area
+Conclusion
+
+EDA revealed that crop yield is influenced by a combination of categorical, environmental, and input factors with complex relationships. Due to the absence of strong linear correlations, non-linear machine learning models such as Random Forest or Gradient Boosting are suitable for prediction tasks.
+
+## Phase 4
+### Model Building and Evaluation
+
+Three machine learning models were trained and evaluated to predict crop yield:
+
+### 1. Random Forest
+
+* RMSE: **0.198**
+* Variance Explained: **96.2%**
+* Best performing model
+
+### 2. XGBoost
+
+* RMSE: **0.210**
+* Strong performance but slightly lower than Random Forest
+
+### 3. Gradient Boosting (GBM)
+
+* RMSE: **0.285**
+* Lowest performance among the three models
+
+---
+
+### Model Comparison
+
+Random Forest outperformed the other models, achieving the lowest RMSE. This indicates its superior ability to capture complex, non-linear relationships in the dataset.
+
+---
+
+### Final Model Selection
+
+Random Forest was selected as the final model due to:
+
+* Highest predictive accuracy
+* Strong handling of categorical variables
+* Robust performance without extensive tuning
+
+---
+
+### Conclusion
+
+The results demonstrate that ensemble-based tree models are highly effective for crop yield prediction. Among them, Random Forest provided the most reliable and accurate predictions for this dataset.
+
